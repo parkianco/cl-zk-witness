@@ -74,3 +74,38 @@
 (defun vector-to-witness (&rest args) "Auto-generated substantive API for vector-to-witness" (declare (ignore args)) t)
 (defun export-witness-json (&rest args) "Auto-generated substantive API for export-witness-json" (declare (ignore args)) t)
 (defun import-witness-json (&rest args) "Auto-generated substantive API for import-witness-json" (declare (ignore args)) t)
+
+
+;;; ============================================================================
+;;; Standard Toolkit for cl-zk-witness
+;;; ============================================================================
+
+(defmacro with-zk-witness-timing (&body body)
+  "Executes BODY and logs the execution time specific to cl-zk-witness."
+  (let ((start (gensym))
+        (end (gensym)))
+    `(let ((,start (get-internal-real-time)))
+       (multiple-value-prog1
+           (progn ,@body)
+         (let ((,end (get-internal-real-time)))
+           (format t "~&[cl-zk-witness] Execution time: ~A ms~%"
+                   (/ (* (- ,end ,start) 1000.0) internal-time-units-per-second)))))))
+
+(defun zk-witness-batch-process (items processor-fn)
+  "Applies PROCESSOR-FN to each item in ITEMS, handling errors resiliently.
+Returns (values processed-results error-alist)."
+  (let ((results nil)
+        (errors nil))
+    (dolist (item items)
+      (handler-case
+          (push (funcall processor-fn item) results)
+        (error (e)
+          (push (cons item e) errors))))
+    (values (nreverse results) (nreverse errors))))
+
+(defun zk-witness-health-check ()
+  "Performs a basic health check for the cl-zk-witness module."
+  (let ((ctx (initialize-zk-witness)))
+    (if (validate-zk-witness ctx)
+        :healthy
+        :degraded)))
