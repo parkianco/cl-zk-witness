@@ -3,7 +3,7 @@
 
 (asdf:defsystem #::cl-zk-witness
   :description "Zero-knowledge witness generation utilities"
-  :author "Parkian Company LLC"
+  :author "Park Ian Co"
   :license "Apache-2.0"
   :version "0.1.0"
   :depends-on ()
@@ -11,13 +11,10 @@
   :components
   ((:file "package")
    (:module "src"
-    :components
-    ((:file "field")
-     (:file "types")
-     (:file "assignment")
-     (:file "generator")
-     (:file "validator")
-     (:file "serialization")))))
+                :components ((:file "package")
+                             (:file "conditions" :depends-on ("package"))
+                             (:file "types" :depends-on ("package"))
+                             (:file "cl-zk-witness" :depends-on ("package" "conditions" "types")))))))
 
 (asdf:defsystem #:cl-zk-witness/test
   :description "Tests for cl-zk-witness"
