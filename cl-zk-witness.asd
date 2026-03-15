@@ -4,7 +4,7 @@
 (asdf:defsystem #::cl-zk-witness
   :description "Zero-knowledge witness generation utilities"
   :author "Parkian Company LLC"
-  :license "BSD-3-Clause"
+  :license "Apache-2.0"
   :version "0.1.0"
   :depends-on ()
   :serial t
