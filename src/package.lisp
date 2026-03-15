@@ -5,7 +5,11 @@
   (:use :cl)
   (:nicknames :zk-witness)
   (:export
-   #:with-zk-witness-timing
+   #:identity-list
+   #:flatten
+   #:map-keys
+   #:now-timestamp
+#:with-zk-witness-timing
    #:zk-witness-batch-process
    #:zk-witness-health-check;; Field
    #:+field-prime+
